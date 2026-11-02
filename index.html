@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Tela Limpa</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Modo ambiente: fica por baixo da tela principal e aparece quando ela desce.
+       Dois estilos em tela cheia: paisagens e obras de arte. -->
+  <div id="paisagem">
+    <div class="foto"></div>
+    <div class="foto"></div>
+    <div id="paisagem-info">
+      <div id="paisagem-hora"></div>
+      <div id="paisagem-legenda"></div>
+    </div>
+
+    <div id="seletor">
+      <span class="opcao" data-modo="fotos">Paisagens</span>
+      <span class="opcao" data-modo="arte">Obra de arte</span>
+    </div>
+    <div id="paisagem-dica"></div>
+  </div>
+
+  <div id="tela">
+    <header>
+      <div class="hora">
+        <div id="relogio">--:--</div>
+        <div id="data"></div>
+      </div>
+      <div id="clima">
+        <div class="clima-linha">
+          <div id="temp">--°</div>
+          <div class="clima-texto">
+            <div id="tempo">Carregando…</div>
+            <div id="minmax"></div>
+          </div>
+        </div>
+        <div class="cidade">Blumenau</div>
+      </div>
+    </header>
+
+    <section id="jogos">
+      <h2>Próximos jogos do São Paulo</h2>
+      <div id="jogos-lista">Carregando…</div>
+    </section>
+
+    <nav id="atalhos">
+      <button class="atalho youtube" data-app="111299001912">
+        <span class="icone">▶</span><span class="nome">YouTube</span>
+      </button>
+      <button class="atalho plex" data-app="3201512006963">
+        <span class="icone">❯</span><span class="nome">Plex</span>
+      </button>
+      <button class="atalho ps5" data-fonte="HDMI">
+        <span class="icone">PS</span><span class="nome">PS5</span>
+      </button>
+    </nav>
+    <div id="dica">↑ paisagens</div>
+  </div>
+
+  <div id="aviso"></div>
+  <script src="main.js"></script>
+</body>
+</html>

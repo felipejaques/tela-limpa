@@ -1,0 +1,258 @@
+/* Tela 1920x1080 em colunas: topo (hora + clima), jogos, atalhos.
+   O flex garante espaço entre as partes; nada é posicionado por cima de nada. */
+html, body {
+  margin: 0;
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: #000;
+  color: #eef0f6;
+  font-family: "SamsungOne", "Helvetica Neue", Arial, sans-serif;
+}
+
+#tela {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  box-sizing: border-box;
+  padding: 90px 140px 100px;
+  display: flex;
+  flex-direction: column;
+  /* Fundo fixo (gradiente linear é barato de pintar na TV) */
+  background: linear-gradient(160deg, #1f2434 0%, #10131c 55%, #0b0d13 100%);
+  /* Desce inteira para revelar as paisagens; transform roda na GPU */
+  transition: transform 600ms cubic-bezier(0.65, 0, 0.35, 1);
+  will-change: transform;
+}
+
+body.paisagem #tela { transform: translateY(1080px); }
+
+#dica {
+  position: absolute;
+  right: 140px;
+  bottom: 36px;
+  font-size: 24px;
+  opacity: 0.35;
+}
+
+/* --- Modo paisagem ------------------------------------------------------- */
+#paisagem {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 1080px;
+  background: #000;
+}
+
+#paisagem .foto {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1200ms ease;
+}
+
+#paisagem .foto.ativa { opacity: 1; }
+
+#paisagem-info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 160px 140px 70px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0));
+}
+
+#paisagem-hora {
+  font-size: 96px;
+  font-weight: 200;
+  line-height: 1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+#paisagem-legenda {
+  margin-top: 16px;
+  max-width: 1300px;
+  font-size: 30px;
+  opacity: 0.85;
+}
+
+#paisagem-dica {
+  position: absolute;
+  top: 60px;
+  right: 140px;
+  font-size: 24px;
+  opacity: 0;
+  transition: opacity 400ms;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+}
+
+body.paisagem #paisagem-dica { opacity: 0.7; }
+
+/* Seletor de estilo: aparece no topo ao entrar e com ↑ */
+#seletor {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 16px;
+  padding: 10px;
+  border-radius: 40px;
+  background: rgba(20, 20, 24, 0.55);
+  opacity: 0;
+  transition: opacity 300ms;
+}
+
+#paisagem.seletor-aberto #seletor { opacity: 1; }
+
+#seletor .opcao {
+  padding: 14px 34px;
+  border-radius: 30px;
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#seletor .opcao.foco {
+  background: #fff;
+  color: #111;
+}
+
+/* --- Obra de arte: a pintura ocupa a tela toda, sem relógio --------------- */
+/* A legenda aparece a cada troca e some depois de alguns segundos (main.js). */
+#paisagem.modo-arte #paisagem-hora { display: none; }
+#paisagem.modo-arte #paisagem-legenda { font-size: 26px; }
+#paisagem-info { transition: opacity 1200ms ease; }
+#paisagem.info-oculta #paisagem-info { opacity: 0; }
+
+/* --- Topo ---------------------------------------------------------------- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+#relogio {
+  font-size: 130px;
+  font-weight: 200;
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+#data {
+  margin-top: 14px;
+  font-size: 36px;
+  opacity: 0.6;
+}
+
+#clima { text-align: right; }
+
+.clima-linha {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+#temp {
+  font-size: 110px;
+  font-weight: 200;
+  line-height: 1;
+}
+
+.clima-texto { text-align: left; }
+#tempo  { font-size: 34px; }
+#minmax { margin-top: 6px; font-size: 28px; opacity: 0.6; }
+.cidade { margin-top: 14px; font-size: 24px; opacity: 0.4; }
+
+/* --- Jogos --------------------------------------------------------------- */
+#jogos {
+  margin-top: 70px;
+}
+
+#jogos h2 {
+  margin: 0 0 20px;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+#jogos-lista {
+  display: flex;
+  gap: 28px;
+  font-size: 28px;
+}
+
+.jogo {
+  flex: 1;
+  min-width: 0;
+  padding: 22px 28px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 6px solid #e32212; /* vermelho tricolor */
+}
+
+.jogo .quando { font-size: 24px; opacity: 0.6; text-transform: capitalize; }
+.jogo .times  { margin: 6px 0 4px; font-size: 34px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.jogo .camp   { font-size: 22px; opacity: 0.5; }
+.jogo .canais { margin-top: 10px; font-size: 24px; color: #f5c84c; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* --- Atalhos ------------------------------------------------------------- */
+/* margin-top:auto empurra os botões para o fim da tela, sempre abaixo dos jogos. */
+#atalhos {
+  margin-top: auto;
+  display: flex;
+  gap: 48px;
+}
+
+.atalho {
+  width: 360px;
+  height: 210px;
+  border: 6px solid transparent;
+  border-radius: 32px;
+  color: #fff;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0.5;
+  /* Só transform e opacity animam: a TV faz isso na GPU, sem repintar. */
+  transition: transform 60ms linear, opacity 60ms linear;
+  will-change: transform;
+}
+
+.atalho.foco {
+  opacity: 1;
+  border-color: #fff;
+  transform: scale(1.06);
+}
+
+.icone { font-size: 70px; font-weight: 700; line-height: 1; }
+.nome  { font-size: 38px; }
+
+.youtube { background: #c4302b; }
+.plex    { background: #282a2d; color: #e5a00d; }
+.ps5     { background: #00439c; }
+
+/* --- Aviso e HDMI -------------------------------------------------------- */
+#aviso {
+  position: absolute;
+  left: 140px;
+  bottom: 36px;
+  font-size: 28px;
+  opacity: 0.7;
+}
+
+body.hdmi { background: transparent; }
+body.hdmi #tela,
+body.hdmi #paisagem { display: none; }
